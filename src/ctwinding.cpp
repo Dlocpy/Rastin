@@ -16,7 +16,7 @@ wxString& CTWinding::memberValue(int col) {
 	case 11: return limitFactorCurve;
 	case 12: return permissiblePowerThreePhase;
 	case 13: return permissiblePowerOnePhase;
-	}
+		}
 }
 
 void CTWinding::serialize(wxTextOutputStream& stream) const {

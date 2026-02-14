@@ -2,8 +2,10 @@ cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 
 project(rastin)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+find_package(wxWidgets REQUIRED COMPONENTS core base adv)
 
 set(SOURCES 
     src/Rastin.cpp
@@ -27,10 +29,11 @@ set(HEADERS
     include/rastin/MyGridCellFloatEditor.h
 )
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+add_executable(${PROJECT_NAME} WIN32 ${SOURCES} ${HEADERS})
 
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${wxWidgets_INCLUDE_DIRS}
 )
 
 find_package(cereal QUIET)
@@ -74,8 +77,6 @@ endif()
 if(CEREAL_TARGET)
     target_link_libraries(${PROJECT_NAME} PRIVATE ${CEREAL_TARGET})
 endif()
-
-find_package(wxWidgets REQUIRED COMPONENTS core base net gui adv)
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE
     ${wxWidgets_DEFINITIONS}
