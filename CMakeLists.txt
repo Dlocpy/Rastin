@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(wxWidgets REQUIRED COMPONENTS core base adv)
 
+
 set(SOURCES 
     src/Rastin.cpp
     src/ctwinding.cpp
@@ -34,6 +35,10 @@ add_executable(${PROJECT_NAME} WIN32 ${SOURCES} ${HEADERS})
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${wxWidgets_INCLUDE_DIRS}
+)
+
+target_compile_options(${PROJECT_NAME} PRIVATE
+    ${wxWidgets_CXX_FLAGS}
 )
 
 find_package(cereal QUIET)
