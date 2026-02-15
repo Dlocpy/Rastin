@@ -1,6 +1,7 @@
 #pragma once
 
 #include <wx/grid.h>
+#include <memory>
 
 // the editor for string/text data
 class WXDLLIMPEXP_ADV MyGridCellFloatEditor : public wxGridCellEditor
@@ -35,7 +36,7 @@ public:
     virtual void SetValidator(const wxValidator& validator);
 #endif
 
-    wxNODISCARD virtual wxGridCellEditor* Clone() const override
+    virtual wxGridCellEditor* Clone() const override
     {
         return new MyGridCellFloatEditor(*this);
     }

@@ -27,7 +27,7 @@
 
 #include "wx/generic/gridsel.h"
 #include "wx/generic/grideditors.h"
-#include "wx/generic/private/grid.h"
+#include "wx/grid.h"
 
 #if defined(__WXGTK__)
 #define WXUNUSED_GTK(identifier)    WXUNUSED(identifier)
