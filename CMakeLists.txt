@@ -19,7 +19,6 @@ set(SOURCES
 )
 
 set(HEADERS
-    include/rastin/ArchiveSplines.h
     include/rastin/Spline.h
     include/rastin/wxstring.h
     include/rastin/ctwinding.h
