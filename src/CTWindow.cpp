@@ -15,7 +15,7 @@ enum {
 };
 
 CTWindow::CTWindow(wxWindow* parent, std::map<wxString, Spline>& limitFactorCurves) : 
-	wxDialog(parent, wxID_ANY, "Кривые предельной кратности"),
+	wxDialog(parent, wxID_ANY, wxT("Кривые предельной кратности")),
 	m_curves(limitFactorCurves) {
 
 	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
@@ -49,8 +49,8 @@ CTWindow::CTWindow(wxWindow* parent, std::map<wxString, Spline>& limitFactorCurv
 
 	// Две кнопки в горизонтальном боксе
 	wxBoxSizer* btnSizer = new wxBoxSizer(wxHORIZONTAL);
-	m_addCurve = new wxButton(this, ID_BUTTON_ADD, "Добавить кривую");
-	m_delCurve = new wxButton(this, ID_BUTTON_DELETE, "Удалить кривую");
+	m_addCurve = new wxButton(this, ID_BUTTON_ADD, wxT("Добавить кривую"));
+	m_delCurve = new wxButton(this, ID_BUTTON_DELETE, wxT("Удалить кривую"));
 
 	btnSizer->Add(m_addCurve, 0, wxRIGHT, 5);
 	btnSizer->Add(m_delCurve, 0);
@@ -73,8 +73,8 @@ CTWindow::CTWindow(wxWindow* parent, std::map<wxString, Spline>& limitFactorCurv
 	for (int i = 0; i < colLabelValues.size(); ++i) {
 		m_gridOfValue->SetColLabelValue(i, colLabelValues[i]);
 	}
-	m_gridOfValue->SetRowLabelValue(0, "S");
-	m_gridOfValue->SetRowLabelValue(1, "K");
+	m_gridOfValue->SetRowLabelValue(0, wxT("S"));
+	m_gridOfValue->SetRowLabelValue(1, wxT("K"));
 
 	m_gridOfValue->SetGridLineColour(*wxBLACK);
 	mainSizer->Add(m_gridOfValue, 0, wxALIGN_CENTER | wxALL, 10);
@@ -109,13 +109,13 @@ void CTWindow::OnButtonAdd(wxCommandEvent& event) {
 	wxString newCurveName = m_nameCurve->GetValue();
 	wxRegEx regex("^\\s+");
 	if (regex.Matches(newCurveName)) {
-		wxMessageBox("Название кривой предельной кратности не должно начинаться с пробелов!",
-			"Внимание", wxOK | wxICON_WARNING);
+		wxMessageBox(wxT("Название кривой предельной кратности не должно начинаться с пробелов!"),
+			wxT("Внимание"), wxOK | wxICON_WARNING);
 		return;
 	}
 	if (newCurveName.empty()) {
-		wxMessageBox("Название кривой предельной кратности не должно быть пустым!",
-			"Внимание", wxOK | wxICON_WARNING);
+		wxMessageBox(wxT("Название кривой предельной кратности не должно быть пустым!"),
+			wxT("Внимание"), wxOK | wxICON_WARNING);
 		return;
 	}
 	std::map<double, double> valuesFromGrid;
@@ -132,13 +132,13 @@ void CTWindow::OnButtonAdd(wxCommandEvent& event) {
 		}
 	}
 	if (valuesFromGrid.size() < 3) {
-		wxMessageBox("Число точек должно быть не меньше 3!",
-			"Внимание", wxOK | wxICON_WARNING);
+		wxMessageBox(wxT("Число точек должно быть не меньше 3!"),
+			wxT("Внимание"), wxOK | wxICON_WARNING);
 		return;
 	}
 	if (m_curves.contains(newCurveName)) {
-		int result = wxMessageBox("Такое название кривой предельной кратности уже существует! Заменить существующую кривую на новую?",
-			"Подтверждение", wxYES_NO | wxICON_QUESTION);
+		int result = wxMessageBox(wxT("Такое название кривой предельной кратности уже существует! Заменить существующую кривую на новую?"),
+			wxT("Подтверждение"), wxYES_NO | wxICON_QUESTION);
 		if (result == wxNO)
 			return;
 	}
@@ -160,8 +160,8 @@ void CTWindow::OnButtonAdd(wxCommandEvent& event) {
 
 void CTWindow::OnButtonDelete(wxCommandEvent& event) {
 	if (m_listCurves->GetCount() > 0) {
-		int result = wxMessageBox("Удалить данную кривую предельной кратности?",
-			"Подтверждение", wxYES_NO | wxICON_QUESTION);
+		int result = wxMessageBox(wxT("Удалить данную кривую предельной кратности?"),
+			wxT("Подтверждение"), wxYES_NO | wxICON_QUESTION);
 		if (result == wxNO)
 			return;
 

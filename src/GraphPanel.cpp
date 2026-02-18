@@ -26,8 +26,8 @@ void GraphPanel::OnPaint(wxPaintEvent& event) {
     dc.DrawLine(margin, margin, margin, height - margin);                 // Kпр
 
     // Подписи
-    dc.DrawText("S", width - margin + 10, height - margin + 10);
-    dc.DrawText("Kпр", margin - 20, margin - 20);
+    dc.DrawText(wxT("S"), width - margin + 10, height - margin + 10);
+    dc.DrawText(wxT("Kпр"), margin - 20, margin - 20);
 
     if (m_currentCurve.has_value()) {
         //кривая предельной кратности

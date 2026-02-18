@@ -21,9 +21,9 @@ enum
     ID_Delete_row = 8
 };
 MainWindow::MainWindow()
-    : wxFrame(NULL, wxID_ANY, "Rastin"), grid(new wxGrid(this, wxID_ANY)), currentFilePath("Без названия") {
+    : wxFrame(NULL, wxID_ANY, wxT("Rastin")), grid(new wxGrid(this, wxID_ANY)), currentFilePath(wxT("Без названия")) {
 
-    SetTitle("Rastin - " + currentFilePath);
+    SetTitle(wxT("Rastin - ") + currentFilePath);
     InitLimitFactorCurves();
     model = new GridTableModel(limitFactorCurves);
 
@@ -103,19 +103,19 @@ void MainWindow::OnAbout(wxCommandEvent& event) {
 void MainWindow::saveCurves(const std::string& filename) {
     std::ofstream os(filename, std::ios::binary);
     if (!os.is_open()) {
-        wxLogError("Не удалось открыть файл для записи: %s", filename);
+        wxLogError(wxT("Не удалось открыть файл для записи: %s"), filename);
     }
     try {
         cereal::BinaryOutputArchive archive(os);
         archive(limitFactorCurves);
     }
     catch (const std::exception& e) {
-        wxLogError("Ошибка сериализации: %s", e.what());
+        wxLogError(wxT("Ошибка сериализации: %s"), e.what());
         os.close();
     }
     os.close();
     if (os.fail()) {
-        wxLogError("Ошибка при закрытии файла (возможно, не хватило места на диске)");
+        wxLogError(wxT("Ошибка при закрытии файла (возможно, не хватило места на диске)"));
     }
 }
 
@@ -131,7 +131,7 @@ void MainWindow::OnCreate(wxCommandEvent& event) {
     if (result == wxCANCEL)
         return;
     if (result == wxYES) {
-        if (currentFilePath == "Без названия") {
+        if (currentFilePath == wxT("Без названия")) {
             wxFileDialog saveFileDialog(this, wxT("Сохранить проект"), "", "new.tin",
                 "TIN files (*.tin)|*.tin", wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxFD_CHANGE_DIR);
 
@@ -142,8 +142,8 @@ void MainWindow::OnCreate(wxCommandEvent& event) {
         model->saveToFile(currentFilePath);
     }
 
-    currentFilePath = "Без названия";
-    SetTitle("Rastin - " + currentFilePath);
+    currentFilePath = wxT("Без названия");
+    SetTitle(wxT("Rastin - ") + currentFilePath);
     grid->SetTable(nullptr);
     model = new GridTableModel(limitFactorCurves);
 
@@ -154,14 +154,14 @@ void MainWindow::OnCreate(wxCommandEvent& event) {
 }
 
 void MainWindow::OnSave(wxCommandEvent& event) {
-    if (currentFilePath == "Без названия") {
+    if (currentFilePath == wxT("Без названия")) {
         wxFileDialog saveFileDialog(this, wxT("Сохранить проект"), "", "new.tin",
             "TIN files (*.tin)|*.tin", wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxFD_CHANGE_DIR);
 
         if (saveFileDialog.ShowModal() == wxID_CANCEL)
             return;     // user cancel dialog
         currentFilePath = saveFileDialog.GetPath();
-        SetTitle("Rastin - " + wxFileName(currentFilePath).GetName());
+        SetTitle(wxT("Rastin - ") + wxFileName(currentFilePath).GetName());
     }
     model->saveToFile(currentFilePath);
 }
@@ -173,7 +173,7 @@ void MainWindow::OnSaveAs(wxCommandEvent& event) {
     if (saveFileDialog.ShowModal() == wxID_CANCEL)
         return;     // user cancel dialog
     currentFilePath = saveFileDialog.GetPath();
-    SetTitle("Rastin - " + wxFileName(currentFilePath).GetName());
+    SetTitle(wxT("Rastin - ") + wxFileName(currentFilePath).GetName());
     model->saveToFile(currentFilePath);
 
 }
@@ -184,7 +184,7 @@ void MainWindow::OnOpen(wxCommandEvent& event) {
     if (result == wxCANCEL)
         return;
     if (result == wxYES) {
-        if (currentFilePath == "Без названия") {
+        if (currentFilePath == wxT("Без названия")) {
             wxFileDialog saveFileDialog(this, wxT("Сохранить проект"), "", "new.tin",
                 "TIN files (*.tin)|*.tin", wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxFD_CHANGE_DIR);
 
@@ -201,7 +201,7 @@ void MainWindow::OnOpen(wxCommandEvent& event) {
     if (openFileDialog.ShowModal() == wxID_CANCEL)
         return;     // user cancel dialog
     currentFilePath = openFileDialog.GetPath();
-    SetTitle("Rastin - " + wxFileName(currentFilePath).GetName());
+    SetTitle(wxT("Rastin - ") + wxFileName(currentFilePath).GetName());
 
     model->loadFromFile(currentFilePath);
     if (grid->GetNumberRows() < model->size()) {
@@ -227,7 +227,7 @@ void MainWindow::OnOpen(wxCommandEvent& event) {
 
     for (int row = 0; row < grid->GetNumberRows(); ++row) {
         if (!limitFactorCurves.contains(grid->GetCellValue(row, 11))) {
-            grid->SetCellValue(row, 11, "<Не выбрано>");
+            grid->SetCellValue(row, 11, wxT("<Не выбрано>"));
             grid->SetCellValue(row, 12, " ");
             grid->SetCellValue(row, 13, " ");
         }
@@ -262,7 +262,7 @@ void MainWindow::OnWindowCT(wxCommandEvent& event) {
     window->Bind(wxEVT_CLOSE_WINDOW, [window, this](wxCloseEvent& evt) {
         window->Destroy();
         wxArrayString choiceLimitCurves;
-        choiceLimitCurves.Add("<Не выбрано>");
+        choiceLimitCurves.Add(wxT("<Не выбрано>"));
         for (auto& curve : limitFactorCurves) {
             choiceLimitCurves.Add(curve.first);
         }
@@ -277,9 +277,9 @@ void MainWindow::OnWindowCT(wxCommandEvent& event) {
         attrLimitCurves->DecRef();
         for (int row = 0; row < grid->GetNumberRows(); ++row) {
             if (!limitFactorCurves.contains(grid->GetCellValue(row, 11))) {
-                grid->SetCellValue(row, 11, "<Не выбрано>");
-                grid->SetCellValue(row, 12, " ");
-                grid->SetCellValue(row, 13, " ");
+                grid->SetCellValue(row, 11, wxT("<Не выбрано>"));
+                grid->SetCellValue(row, 12, wxT(" "));
+                grid->SetCellValue(row, 13, wxT(" "));
             } 
         }
         });
@@ -309,7 +309,7 @@ void MainWindow::OnAddRow(wxCommandEvent& event) {
     wxArrayString choiceSecondaryCT{ "1", "5" };
 
     wxArrayString choiceLimitCurves;
-    choiceLimitCurves.Add("<Не выбрано>");
+    choiceLimitCurves.Add(wxT("<Не выбрано>"));
     for (auto& curve : limitFactorCurves) {
         choiceLimitCurves.Add(curve.first);
     }
@@ -377,7 +377,7 @@ void MainWindow::InitTableValidation() {
     wxArrayString choiceSecondaryCT{ "1", "5" };
 
     wxArrayString choiceLimitCurves;
-    choiceLimitCurves.Add("<Не выбрано>");
+    choiceLimitCurves.Add(wxT("<Не выбрано>"));
     for (auto& curve : limitFactorCurves) {
         choiceLimitCurves.Add(curve.first);
     }
