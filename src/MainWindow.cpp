@@ -28,34 +28,34 @@ MainWindow::MainWindow()
     model = new GridTableModel(limitFactorCurves);
 
     wxMenu* menuFile = new wxMenu;
-    menuFile->Append(ID_Create, "&Создать...\tCtrl-H",
-        "Создать новый проект");
-    menuFile->Append(ID_Save, "&Сохранить", "Сохранение текущего файла");
-    menuFile->Append(ID_Save_as, "&Сохранить как...", "Сохранение под другим названием");
-    menuFile->Append(ID_Open, "&Открыть...", "Открыть проект");
+    menuFile->Append(ID_Create, wxT("&Создать...\tCtrl-H"),
+        wxT("Создать новый проект"));
+    menuFile->Append(ID_Save, wxT("&Сохранить"), wxT("Сохранение текущего файла"));
+    menuFile->Append(ID_Save_as, wxT("&Сохранить как..."), wxT("Сохранение под другим названием"));
+    menuFile->Append(ID_Open, wxT("&Открыть..."), wxT("Открыть проект"));
     menuFile->AppendSeparator();
-    menuFile->Append(wxID_EXIT, "&Выход", "Выход из программы");
+    menuFile->Append(wxID_EXIT, wxT("&Выход"), wxT("Выход из программы"));
 
     wxMenu* menuModule = new wxMenu;
-    menuModule->Append(ID_Window_CT, "&Модуль ТТ...", "Добавить кривую предельной кратности");
+    menuModule->Append(ID_Window_CT, wxT("&Модуль ТТ..."), wxT("Добавить кривую предельной кратности"));
 
     wxMenu* menuTable = new wxMenu;
-    menuTable->Append(ID_Add_row, "&Добавить строку\tCtrl-+", "Добавить строку в таблице");
-    menuTable->Append(ID_Delete_row, "&Удалить строку\tCtrl--", "Удалить строку в таблице");
+    menuTable->Append(ID_Add_row, wxT("&Добавить строку\tCtrl-+"), wxT("Добавить строку в таблице"));
+    menuTable->Append(ID_Delete_row, wxT("&Удалить строку\tCtrl--"), wxT("Удалить строку в таблице"));
 
     wxMenu* menuHelp = new wxMenu;
-    menuHelp->Append(wxID_ABOUT, "&О программе...", "О программе");
+    menuHelp->Append(wxID_ABOUT, wxT("&О программе..."), wxT("О программе"));
 
     wxMenuBar* menuBar = new wxMenuBar;
-    menuBar->Append(menuFile, "&Файл");
-    menuBar->Append(menuModule, "&Модули");
-    menuBar->Append(menuTable, "&Таблица");
-    menuBar->Append(menuHelp, "&Помощь");
+    menuBar->Append(menuFile, wxT("&Файл"));
+    menuBar->Append(menuModule, wxT("&Модули"));
+    menuBar->Append(menuTable, wxT("&Таблица"));
+    menuBar->Append(menuHelp, wxT("&Помощь"));
 
     SetMenuBar(menuBar);
 
     CreateStatusBar();
-    SetStatusText("Добро пожаловать!!!");
+    SetStatusText(wxT("Добро пожаловать!!!"));
 
     Bind(wxEVT_MENU, &MainWindow::OnCreate, this, ID_Create);
     Bind(wxEVT_MENU, &MainWindow::OnSave, this, ID_Save);
@@ -77,7 +77,7 @@ MainWindow::MainWindow()
     
     InitTableValidation();
     
-    calcButton = new wxButton(this, wxID_ANY, "Расчёт");
+    calcButton = new wxButton(this, wxID_ANY, wxT("Расчёт"));
     Bind(wxEVT_BUTTON, &MainWindow::Calc10Persent, this);
 
     wxBoxSizer* mainSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -95,8 +95,8 @@ void MainWindow::OnExit(wxCommandEvent& event) {
 }
 
 void MainWindow::OnAbout(wxCommandEvent& event) {
-    wxMessageBox("Это программа по расчету трансформаторов тока и трансформаторов напряжения\nВерсия 0.1.0",
-        "О программе", wxOK | wxICON_INFORMATION);
+    wxMessageBox(wxT("Это программа по расчету трансформаторов тока и трансформаторов напряжения\nВерсия 0.1.0"),
+        wxT("О программе"), wxOK | wxICON_INFORMATION);
 }
 
 
@@ -126,13 +126,13 @@ void MainWindow::loadCurves(const std::string& filename) {
 }
 
 void MainWindow::OnCreate(wxCommandEvent& event) {
-    int result = wxMessageBox("Сохранить изменения?",
-        "Подтверждение", wxYES_NO | wxCANCEL | wxICON_QUESTION);
+    int result = wxMessageBox(wxT("Сохранить изменения?"),
+        wxT("Подтверждение"), wxYES_NO | wxCANCEL | wxICON_QUESTION);
     if (result == wxCANCEL)
         return;
     if (result == wxYES) {
         if (currentFilePath == "Без названия") {
-            wxFileDialog saveFileDialog(this, _("Сохранить проект"), "", "new.tin",
+            wxFileDialog saveFileDialog(this, wxT("Сохранить проект"), "", "new.tin",
                 "TIN files (*.tin)|*.tin", wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxFD_CHANGE_DIR);
 
             if (saveFileDialog.ShowModal() == wxID_CANCEL)
@@ -155,7 +155,7 @@ void MainWindow::OnCreate(wxCommandEvent& event) {
 
 void MainWindow::OnSave(wxCommandEvent& event) {
     if (currentFilePath == "Без названия") {
-        wxFileDialog saveFileDialog(this, _("Сохранить проект"), "", "new.tin",
+        wxFileDialog saveFileDialog(this, wxT("Сохранить проект"), "", "new.tin",
             "TIN files (*.tin)|*.tin", wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxFD_CHANGE_DIR);
 
         if (saveFileDialog.ShowModal() == wxID_CANCEL)
@@ -167,7 +167,7 @@ void MainWindow::OnSave(wxCommandEvent& event) {
 }
 
 void MainWindow::OnSaveAs(wxCommandEvent& event) {
-    wxFileDialog saveFileDialog(this, _("Сохранить проект"), "", "new.tin",
+    wxFileDialog saveFileDialog(this, wxT("Сохранить проект"), "", "new.tin",
         "TIN files (*.tin)|*.tin", wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxFD_CHANGE_DIR);
 
     if (saveFileDialog.ShowModal() == wxID_CANCEL)
@@ -179,13 +179,13 @@ void MainWindow::OnSaveAs(wxCommandEvent& event) {
 }
 
 void MainWindow::OnOpen(wxCommandEvent& event) {
-    int result = wxMessageBox("Сохранить изменения в текущем файле?",
-        "Подтверждение", wxYES_NO | wxCANCEL | wxICON_QUESTION);
+    int result = wxMessageBox(wxT("Сохранить изменения в текущем файле?"),
+        wxT("Подтверждение"), wxYES_NO | wxCANCEL | wxICON_QUESTION);
     if (result == wxCANCEL)
         return;
     if (result == wxYES) {
         if (currentFilePath == "Без названия") {
-            wxFileDialog saveFileDialog(this, _("Сохранить проект"), "", "new.tin",
+            wxFileDialog saveFileDialog(this, wxT("Сохранить проект"), "", "new.tin",
                 "TIN files (*.tin)|*.tin", wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxFD_CHANGE_DIR);
 
             if (saveFileDialog.ShowModal() == wxID_CANCEL)
@@ -195,7 +195,7 @@ void MainWindow::OnOpen(wxCommandEvent& event) {
         model->saveToFile(currentFilePath);
     }
 
-    wxFileDialog openFileDialog(this, _("Открыть файл проекта"), "", "",
+    wxFileDialog openFileDialog(this, wxT("Открыть файл проекта"), "", "",
             "TIN files (*.tin)|*.tin", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 
     if (openFileDialog.ShowModal() == wxID_CANCEL)
@@ -254,7 +254,7 @@ void MainWindow::Calc10Persent(wxCommandEvent& event) {
     }
     attrGreen->DecRef();
     attrRed->DecRef();
-    wxLogMessage("Расчет окончен!!!");
+    wxLogMessage(wxT("Расчет окончен!!!"));
 }
 
 void MainWindow::OnWindowCT(wxCommandEvent& event) {
@@ -337,7 +337,7 @@ void MainWindow::OnDeleteRow(wxCommandEvent& event) {
 
     int rowCount = grid->GetNumberRows();
     if (rowCount == 0) {
-        wxMessageBox("Нет строк для удаления", "Информация");
+        wxMessageBox(wxT("Нет строк для удаления"), wxT("Информация"));
         return;
     }
     int lastRow = rowCount - 1;
