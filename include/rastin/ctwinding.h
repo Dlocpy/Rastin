@@ -1,21 +1,21 @@
-#pragma once
+п»ї#pragma once
 #include <wx/string.h>
 #include <wx/txtstrm.h>
 
 struct CTWinding {
-	wxString primaryCT;							//первичный ток ТТ										целое число
-	wxString secondaryCT;						//вторичный ток ТТ										1 или 5
-	wxString alf;								//номинальная кратность ТТ								целое число 1 до 100
-	wxString ratedSecondaryPower;				//номинальная мощность вторичной обмотки ТТ				целое число от 3 до 100
-	wxString relayProtection;					//подключенная к обмотке защита/ы						текст
-	wxString protectionPower;					//мощность подключенной защиты							вещественное число
-	wxString lengthCable;						//длина кабеля											вещественное число
-	wxString crossSectionArea;					//сечение жилы кабеля									1.5, 2.5, 4.0, 6.0
-	wxString constactResistance;				//сопротивление контактов								вещественное число
-	wxString threePhaseCurrent;					//ток трехфазного короткого замыкания					вещественное число
-	wxString onePhaseCurrent;					//ток однофазного короткого замыкания					вещественное число
-	wxString limitFactorCurve;					//Выбранная кривая предельной кратности	
-	wxString permissiblePowerThreePhase;		//допустимая мощность по кривой предельной кратности	вещественное число
+	wxString primaryCT;							//РїРµСЂРІРёС‡РЅС‹Р№ С‚РѕРє РўРў										С†РµР»РѕРµ С‡РёСЃР»Рѕ
+	wxString secondaryCT;						//РІС‚РѕСЂРёС‡РЅС‹Р№ С‚РѕРє РўРў										1 РёР»Рё 5
+	wxString alf;								//РЅРѕРјРёРЅР°Р»СЊРЅР°СЏ РєСЂР°С‚РЅРѕСЃС‚СЊ РўРў								С†РµР»РѕРµ С‡РёСЃР»Рѕ 1 РґРѕ 100
+	wxString ratedSecondaryPower;				//РЅРѕРјРёРЅР°Р»СЊРЅР°СЏ РјРѕС‰РЅРѕСЃС‚СЊ РІС‚РѕСЂРёС‡РЅРѕР№ РѕР±РјРѕС‚РєРё РўРў				С†РµР»РѕРµ С‡РёСЃР»Рѕ РѕС‚ 3 РґРѕ 100
+	wxString relayProtection;					//РїРѕРґРєР»СЋС‡РµРЅРЅР°СЏ Рє РѕР±РјРѕС‚РєРµ Р·Р°С‰РёС‚Р°/С‹						С‚РµРєСЃС‚
+	wxString protectionPower;					//РјРѕС‰РЅРѕСЃС‚СЊ РїРѕРґРєР»СЋС‡РµРЅРЅРѕР№ Р·Р°С‰РёС‚С‹							РІРµС‰РµСЃС‚РІРµРЅРЅРѕРµ С‡РёСЃР»Рѕ
+	wxString lengthCable;						//РґР»РёРЅР° РєР°Р±РµР»СЏ											РІРµС‰РµСЃС‚РІРµРЅРЅРѕРµ С‡РёСЃР»Рѕ
+	wxString crossSectionArea;					//СЃРµС‡РµРЅРёРµ Р¶РёР»С‹ РєР°Р±РµР»СЏ									1.5, 2.5, 4.0, 6.0
+	wxString constactResistance;				//СЃРѕРїСЂРѕС‚РёРІР»РµРЅРёРµ РєРѕРЅС‚Р°РєС‚РѕРІ								РІРµС‰РµСЃС‚РІРµРЅРЅРѕРµ С‡РёСЃР»Рѕ
+	wxString threePhaseCurrent;					//С‚РѕРє С‚СЂРµС…С„Р°Р·РЅРѕРіРѕ РєРѕСЂРѕС‚РєРѕРіРѕ Р·Р°РјС‹РєР°РЅРёСЏ					РІРµС‰РµСЃС‚РІРµРЅРЅРѕРµ С‡РёСЃР»Рѕ
+	wxString onePhaseCurrent;					//С‚РѕРє РѕРґРЅРѕС„Р°Р·РЅРѕРіРѕ РєРѕСЂРѕС‚РєРѕРіРѕ Р·Р°РјС‹РєР°РЅРёСЏ					РІРµС‰РµСЃС‚РІРµРЅРЅРѕРµ С‡РёСЃР»Рѕ
+	wxString limitFactorCurve;					//Р’С‹Р±СЂР°РЅРЅР°СЏ РєСЂРёРІР°СЏ РїСЂРµРґРµР»СЊРЅРѕР№ РєСЂР°С‚РЅРѕСЃС‚Рё	
+	wxString permissiblePowerThreePhase;		//РґРѕРїСѓСЃС‚РёРјР°СЏ РјРѕС‰РЅРѕСЃС‚СЊ РїРѕ РєСЂРёРІРѕР№ РїСЂРµРґРµР»СЊРЅРѕР№ РєСЂР°С‚РЅРѕСЃС‚Рё	РІРµС‰РµСЃС‚РІРµРЅРЅРѕРµ С‡РёСЃР»Рѕ
 	wxString permissiblePowerOnePhase;
 
 	void serialize(wxTextOutputStream& stream) const;

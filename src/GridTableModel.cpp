@@ -1,4 +1,4 @@
-#include "rastin/GridTableModel.h"
+п»ї#include "rastin/GridTableModel.h"
 #include <wx/wfstream.h>
 #include <wx/msgdlg.h>
 
@@ -6,20 +6,20 @@ GridTableModel::GridTableModel(std::map<wxString, Spline>& limitFactorCurves) :
 	m_curves(limitFactorCurves) {
 	initData();
 }
-//Создание таблицы с данными
+//РЎРѕР·РґР°РЅРёРµ С‚Р°Р±Р»РёС†С‹ СЃ РґР°РЅРЅС‹РјРё
 void GridTableModel::initData() {
 	
 
 
-	m_colLabels = { "Iперв", "Iвтор", "Kном", "Sном",
-				    "Защита", "Sнагр", "Lкаб", "Сечение",
-					"Rконт", "I(3)кз", "I(1)кз", "Kпр",
-		            "S(3)доп", "S(1)доп" };
+	m_colLabels = { "IРїРµСЂРІ", "IРІС‚РѕСЂ", "KРЅРѕРј", "SРЅРѕРј",
+				    "Р—Р°С‰РёС‚Р°", "SРЅР°РіСЂ", "LРєР°Р±", "РЎРµС‡РµРЅРёРµ",
+					"RРєРѕРЅС‚", "I(3)РєР·", "I(1)РєР·", "KРїСЂ",
+		            "S(3)РґРѕРї", "S(1)РґРѕРї" };
 #if 1	
 	m_dataTable = {
 		CTWinding{ " ", " ", " ", " ",
 				   " ", " ", " ", " ",
-				   " ", " ", " ", "<Не выбрано>",
+				   " ", " ", " ", "<РќРµ РІС‹Р±СЂР°РЅРѕ>",
 				   " ", " " }
 	};
 	for (int row = 0; row < GetNumberRows(); ++row)
@@ -52,7 +52,7 @@ void GridTableModel::SetValue(int row, int col, const wxString& value) {
 	if (row < 0 || row >= static_cast<int>(m_dataTable.size()) || col < 0 || col >= static_cast<int>(m_colLabels.size()))
 		return;
 	m_dataTable[row].memberValue(col) = value;
-	if (col == 0 || col == 9 || col == 10 || col == 11) //меняются первичный ток, трехфазный ток КЗ, однофазный ток КЗ, кривая предельной кратности
+	if (col == 0 || col == 9 || col == 10 || col == 11) //РјРµРЅСЏСЋС‚СЃСЏ РїРµСЂРІРёС‡РЅС‹Р№ С‚РѕРє, С‚СЂРµС…С„Р°Р·РЅС‹Р№ С‚РѕРє РљР—, РѕРґРЅРѕС„Р°Р·РЅС‹Р№ С‚РѕРє РљР—, РєСЂРёРІР°СЏ РїСЂРµРґРµР»СЊРЅРѕР№ РєСЂР°С‚РЅРѕСЃС‚Рё
 		CalcLimitFactorCurvesRow(row);
 		
 }
@@ -69,7 +69,7 @@ bool GridTableModel::AppendRows(size_t numRows) {
 	
 	m_dataTable.emplace_back(CTWinding{ " ", " ", " ", " ",
 										" ", " ", " ", " ",
-										" ", " ", " ", "<Не выбрано>",
+										" ", " ", " ", "<РќРµ РІС‹Р±СЂР°РЅРѕ>",
 				                        " ", " " });
 	return true;
 }
@@ -105,7 +105,7 @@ bool GridTableModel::loadFromFile(const wxString& filename) {
 }
 
 bool GridTableModel::calcRow(int row) const {
-	//из строки в число
+	//РёР· СЃС‚СЂРѕРєРё РІ С‡РёСЃР»Рѕ
 	double primaryCT;
 	m_dataTable[row].primaryCT.ToDouble(&primaryCT);
 	double secondaryCT;
@@ -130,7 +130,7 @@ bool GridTableModel::calcRow(int row) const {
 	m_dataTable[row].permissiblePowerThreePhase.ToDouble(&permissiblePowerThreePhase);
 	double permissiblePowerOnePhase;
 	m_dataTable[row].permissiblePowerOnePhase.ToDouble(&permissiblePowerOnePhase);
-	//Расчет
+	//Р Р°СЃС‡РµС‚
 	double rWireThreePhaseCurrent = (lengthCable * 0.0175) / crossSectionArea;
 	double rWireOnePhaseCurrent = 2 * (lengthCable * 0.0175) / crossSectionArea;
 	double rDevice = protectionPower / (secondaryCT * secondaryCT);
@@ -153,7 +153,7 @@ void GridTableModel::CalcLimitFactorCurvesRow(int row) {
 	GetValue(row, 9).ToDouble(&threePhaseCurrent);
 	GetValue(row, 10).ToDouble(&onePhaseCurrent);
 	wxString currentCurve = m_dataTable[row].limitFactorCurve;
-	if (currentCurve == "<Не выбрано>") {
+	if (currentCurve == "<РќРµ РІС‹Р±СЂР°РЅРѕ>") {
 			SetValue(row, 12, " ");
 			SetValue(row, 13, " ");
 	}

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <wx/dialog.h>
 #include <wx/grid.h>

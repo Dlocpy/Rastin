@@ -1,4 +1,4 @@
-#include <wx/dcclient.h>
+п»ї#include <wx/dcclient.h>
 #include "rastin/GraphPanel.h"
 
 GraphPanel::GraphPanel(wxWindow* parent) : 
@@ -10,27 +10,27 @@ void GraphPanel::OnPaint(wxPaintEvent& event) {
     
     wxPaintDC dc(this);
 
-    //очистка фона
+    //РѕС‡РёСЃС‚РєР° С„РѕРЅР°
     dc.SetBackground(*wxWHITE_BRUSH);
     dc.Clear();
 
-    //получение размеров панели пользователя
+    //РїРѕР»СѓС‡РµРЅРёРµ СЂР°Р·РјРµСЂРѕРІ РїР°РЅРµР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
     int width, height;
     GetClientSize(&width, &height);
 
     const int margin = 50;
     const double reserve = 15.0 / 100 + 1.0;
-    // Оси
+    // РћСЃРё
     dc.SetPen(wxPen(*wxBLACK, 2));
     dc.DrawLine(margin, height - margin, width - margin, height - margin); // S
-    dc.DrawLine(margin, margin, margin, height - margin);                 // Kпр
+    dc.DrawLine(margin, margin, margin, height - margin);                 // KРїСЂ
 
-    // Подписи
+    // РџРѕРґРїРёСЃРё
     dc.DrawText("S", width - margin + 10, height - margin + 10);
-    dc.DrawText("Kпр", margin - 20, margin - 20);
+    dc.DrawText("KРїСЂ", margin - 20, margin - 20);
 
     if (m_currentCurve.has_value()) {
-        //кривая предельной кратности
+        //РєСЂРёРІР°СЏ РїСЂРµРґРµР»СЊРЅРѕР№ РєСЂР°С‚РЅРѕСЃС‚Рё
         dc.SetPen(wxPen(*wxBLUE, 5));
 
         double xMin = m_currentCurve.value().GetXMin();

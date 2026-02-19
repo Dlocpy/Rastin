@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <wx/panel.h>
 #include <optional>
 #include "Spline.h"
