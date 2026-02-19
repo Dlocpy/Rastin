@@ -227,7 +227,7 @@ void MainWindow::OnOpen(wxCommandEvent& event) {
 
     for (int row = 0; row < grid->GetNumberRows(); ++row) {
         if (!limitFactorCurves.contains(grid->GetCellValue(row, 11))) {
-            grid->SetCellValue(row, 11, wxT("<Не выбрано>"));
+            grid->SetCellValue(row, 11, "<Не выбрано>");
             grid->SetCellValue(row, 12, " ");
             grid->SetCellValue(row, 13, " ");
         }
@@ -262,7 +262,7 @@ void MainWindow::OnWindowCT(wxCommandEvent& event) {
     window->Bind(wxEVT_CLOSE_WINDOW, [window, this](wxCloseEvent& evt) {
         window->Destroy();
         wxArrayString choiceLimitCurves;
-        choiceLimitCurves.Add(wxT("<Не выбрано>"));
+        choiceLimitCurves.Add("<Не выбрано>");
         for (auto& curve : limitFactorCurves) {
             choiceLimitCurves.Add(curve.first);
         }
@@ -277,9 +277,9 @@ void MainWindow::OnWindowCT(wxCommandEvent& event) {
         attrLimitCurves->DecRef();
         for (int row = 0; row < grid->GetNumberRows(); ++row) {
             if (!limitFactorCurves.contains(grid->GetCellValue(row, 11))) {
-                grid->SetCellValue(row, 11, wxT("<Не выбрано>"));
-                grid->SetCellValue(row, 12, wxT(" "));
-                grid->SetCellValue(row, 13, wxT(" "));
+                grid->SetCellValue(row, 11, "<Не выбрано>");
+                grid->SetCellValue(row, 12, " ");
+                grid->SetCellValue(row, 13, " ");
             } 
         }
         });
@@ -309,7 +309,7 @@ void MainWindow::OnAddRow(wxCommandEvent& event) {
     wxArrayString choiceSecondaryCT{ "1", "5" };
 
     wxArrayString choiceLimitCurves;
-    choiceLimitCurves.Add(wxT("<Не выбрано>"));
+    choiceLimitCurves.Add("<Не выбрано>");
     for (auto& curve : limitFactorCurves) {
         choiceLimitCurves.Add(curve.first);
     }
@@ -377,7 +377,7 @@ void MainWindow::InitTableValidation() {
     wxArrayString choiceSecondaryCT{ "1", "5" };
 
     wxArrayString choiceLimitCurves;
-    choiceLimitCurves.Add(wxT("<Не выбрано>"));
+    choiceLimitCurves.Add("<Не выбрано>");
     for (auto& curve : limitFactorCurves) {
         choiceLimitCurves.Add(curve.first);
     }
