@@ -73,8 +73,8 @@ CTWindow::CTWindow(wxWindow* parent, std::map<wxString, Spline>& limitFactorCurv
 	for (int i = 0; i < colLabelValues.size(); ++i) {
 		m_gridOfValue->SetColLabelValue(i, colLabelValues[i]);
 	}
-	m_gridOfValue->SetRowLabelValue(0, wxT("S"));
-	m_gridOfValue->SetRowLabelValue(1, wxT("K"));
+	m_gridOfValue->SetRowLabelValue(0, "S");
+	m_gridOfValue->SetRowLabelValue(1, "K");
 
 	m_gridOfValue->SetGridLineColour(*wxBLACK);
 	mainSizer->Add(m_gridOfValue, 0, wxALIGN_CENTER | wxALL, 10);
