@@ -1,4 +1,4 @@
-﻿#include <wx/dcclient.h>
+#include <wx/dcclient.h>
 #include "rastin/GraphPanel.h"
 
 GraphPanel::GraphPanel(wxWindow* parent) : 

@@ -1,4 +1,4 @@
-﻿#include "rastin/MainWindow.h"
+#include "rastin/MainWindow.h"
 
 
 class MyApp : public wxApp

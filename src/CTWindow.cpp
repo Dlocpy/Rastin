@@ -1,4 +1,4 @@
-﻿
+
 #include <wx/log.h>
 #include <wx/sizer.h>
 #include <wx/string.h>

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <wx/string.h>
 #include <wx/txtstrm.h>
 

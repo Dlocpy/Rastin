@@ -1,4 +1,4 @@
-﻿
+
 #include <wx/sizer.h>
 #include <wx/valnum.h>
 #include <wx/filename.h>

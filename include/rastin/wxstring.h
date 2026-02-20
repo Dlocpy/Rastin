@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <cereal/cereal.hpp>
 #include <wx/string.h>

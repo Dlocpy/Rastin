@@ -1,4 +1,4 @@
-﻿#include "rastin/GridTableModel.h"
+#include "rastin/GridTableModel.h"
 #include <wx/wfstream.h>
 #include <wx/msgdlg.h>
 

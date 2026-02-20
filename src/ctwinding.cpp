@@ -1,4 +1,4 @@
-﻿#include "rastin/ctwinding.h"
+#include "rastin/ctwinding.h"
 
 wxString& CTWinding::memberValue(int col) {
 	switch (col) {

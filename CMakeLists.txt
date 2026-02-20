@@ -1,4 +1,4 @@
-﻿if(MSVC)
+if(MSVC)
     add_compile_options(/utf-8)
 endif()
 cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
