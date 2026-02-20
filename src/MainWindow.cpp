@@ -77,7 +77,7 @@ MainWindow::MainWindow()
     
     InitTableValidation();
     
-    calcButton = new wxButton(this, wxID_ANY, wxT("Расчёт"));
+    calcButton = new wxButton(this, wxID_ANY, wxS("Расчёт"));
     Bind(wxEVT_BUTTON, &MainWindow::Calc10Persent, this);
 
     wxBoxSizer* mainSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -227,9 +227,9 @@ void MainWindow::OnOpen(wxCommandEvent& event) {
 
     for (int row = 0; row < grid->GetNumberRows(); ++row) {
         if (!limitFactorCurves.contains(grid->GetCellValue(row, 11))) {
-            grid->SetCellValue(row, 11, "<Не выбрано>");
-            grid->SetCellValue(row, 12, " ");
-            grid->SetCellValue(row, 13, " ");
+            grid->SetCellValue(row, 11, _("<Не выбрано>"));
+            grid->SetCellValue(row, 12, _(" "));
+            grid->SetCellValue(row, 13, _(" "));
         }
     }
 }
@@ -262,7 +262,7 @@ void MainWindow::OnWindowCT(wxCommandEvent& event) {
     window->Bind(wxEVT_CLOSE_WINDOW, [window, this](wxCloseEvent& evt) {
         window->Destroy();
         wxArrayString choiceLimitCurves;
-        choiceLimitCurves.Add("<Не выбрано>");
+        choiceLimitCurves.Add(_("<Не выбрано>"));
         for (auto& curve : limitFactorCurves) {
             choiceLimitCurves.Add(curve.first);
         }
@@ -277,9 +277,9 @@ void MainWindow::OnWindowCT(wxCommandEvent& event) {
         attrLimitCurves->DecRef();
         for (int row = 0; row < grid->GetNumberRows(); ++row) {
             if (!limitFactorCurves.contains(grid->GetCellValue(row, 11))) {
-                grid->SetCellValue(row, 11, "<Не выбрано>");
-                grid->SetCellValue(row, 12, " ");
-                grid->SetCellValue(row, 13, " ");
+                grid->SetCellValue(row, 11, _("<Не выбрано>"));
+                grid->SetCellValue(row, 12, _(" "));
+                grid->SetCellValue(row, 13, _(" "));
             } 
         }
         });
@@ -306,15 +306,15 @@ void MainWindow::OnAddRow(wxCommandEvent& event) {
     grid->SetReadOnly(newRow, 12, true);
     grid->SetReadOnly(newRow, 13, true);
 
-    wxArrayString choiceSecondaryCT{ "1", "5" };
+    wxArrayString choiceSecondaryCT{ _("1"), _("5") };
 
     wxArrayString choiceLimitCurves;
-    choiceLimitCurves.Add("<Не выбрано>");
+    choiceLimitCurves.Add(_("<Не выбрано>"));
     for (auto& curve : limitFactorCurves) {
         choiceLimitCurves.Add(curve.first);
     }
 
-    wxArrayString choiceCrossSectionArea{ "1.5", "2.5", "4.0", "6.0" };
+    wxArrayString choiceCrossSectionArea{ _("1.5"), _("2.5"), _("4.0"), _("6.0") };
 
     wxGridCellAttr* attrSecondaryCT = new wxGridCellAttr();
     wxGridCellAttr* attrLimitCurves = new wxGridCellAttr();
@@ -374,15 +374,15 @@ void MainWindow::InitTableValidation() {
         grid->SetReadOnly(row, 13, true);
     }
     
-    wxArrayString choiceSecondaryCT{ "1", "5" };
+    wxArrayString choiceSecondaryCT{ _("1"), _("5") };
 
     wxArrayString choiceLimitCurves;
-    choiceLimitCurves.Add("<Не выбрано>");
+    choiceLimitCurves.Add(_("<Не выбрано>"));
     for (auto& curve : limitFactorCurves) {
         choiceLimitCurves.Add(curve.first);
     }
    
-    wxArrayString choiceCrossSectionArea{ "1.5", "2.5", "4.0", "6.0" };
+    wxArrayString choiceCrossSectionArea{ _("1.5"), _("2.5"), _("4.0"), _("6.0") };
 
     wxGridCellAttr* attrSecondaryCT = new wxGridCellAttr();
     wxGridCellAttr* attrLimitCurves = new wxGridCellAttr();

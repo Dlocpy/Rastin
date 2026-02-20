@@ -1,5 +1,5 @@
 #pragma once
-
+#pragma execution_character_set("utf-8")
 #include <wx/dialog.h>
 #include <wx/grid.h>
 #include <wx/listbox.h>
@@ -30,4 +30,3 @@ private:
 	wxGrid* m_gridOfValue;
 	std::map<wxString, Spline>& m_curves;
 };
-

@@ -11,16 +11,16 @@ void GridTableModel::initData() {
 	
 
 
-	m_colLabels = { "Iперв", "Iвтор", "Kном", "Sном",
-				    "Защита", "Sнагр", "Lкаб", "Сечение",
-					"Rконт", "I(3)кз", "I(1)кз", "Kпр",
-		            "S(3)доп", "S(1)доп" };
+	m_colLabels = { _("Iперв"), _("Iвтор"), _("Kном"), _("Sном"),
+				    _("Защита"), _("Sнагр"), _("Lкаб"), _("Сечение"),
+					_("Rконт"), _("I(3)кз"), _("I(1)кз"), _("Kпр"),
+		            _("S(3)доп"), _("S(1)доп") };
 #if 1	
 	m_dataTable = {
-		CTWinding{ " ", " ", " ", " ",
-				   " ", " ", " ", " ",
-				   " ", " ", " ", "<Не выбрано>",
-				   " ", " " }
+		CTWinding{ _(" "), _(" "), _(" "), _(" "),
+				   _(" "), _(" "), _(" "), _(" "),
+				   _(" "), _(" "), _(" "), _("<Не выбрано>"),
+				   _(" "), _(" ") }
 	};
 	for (int row = 0; row < GetNumberRows(); ++row)
 		CalcLimitFactorCurvesRow(row);
@@ -67,10 +67,10 @@ wxString GridTableModel::GetRowLabelValue(int row) {
 
 bool GridTableModel::AppendRows(size_t numRows) {
 	
-	m_dataTable.emplace_back(CTWinding{ " ", " ", " ", " ",
-										" ", " ", " ", " ",
-										" ", " ", " ", "<Не выбрано>",
-				                        " ", " " });
+	m_dataTable.emplace_back(CTWinding{ _(" "), _(" "), _(" "), _(" "),
+				   _(" "), _(" "), _(" "), _(" "),
+				   _(" "), _(" "), _(" "), _("<Не выбрано>"),
+				   _(" "), _(" ") });
 	return true;
 }
 
@@ -153,7 +153,7 @@ void GridTableModel::CalcLimitFactorCurvesRow(int row) {
 	GetValue(row, 9).ToDouble(&threePhaseCurrent);
 	GetValue(row, 10).ToDouble(&onePhaseCurrent);
 	wxString currentCurve = m_dataTable[row].limitFactorCurve;
-	if (currentCurve == "<Не выбрано>") {
+	if (currentCurve == _("<Не выбрано>")) {
 			SetValue(row, 12, " ");
 			SetValue(row, 13, " ");
 	}
