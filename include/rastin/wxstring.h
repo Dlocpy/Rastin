@@ -2,14 +2,13 @@
 
 #include <cereal/cereal.hpp>
 #include <wx/string.h>
-#include <wx/strvararg.h>  // для wxScopedCharBuffer
+#include <wx/strvararg.h>
 
 namespace cereal {
 
       template <class Archive>
       inline void CEREAL_SAVE_FUNCTION_NAME(Archive& ar, wxString const& s)
       {
-          // Получаем UTF-8 представление
           wxScopedCharBuffer utf8 = s.utf8_str();  
           size_t len = strlen(utf8.data());         
 

@@ -21,41 +21,41 @@ enum
     ID_Delete_row = 8
 };
 MainWindow::MainWindow()
-    : wxFrame(NULL, wxID_ANY, wxT("Rastin")), grid(new wxGrid(this, wxID_ANY)), currentFilePath(wxT("Без названия")) {
+    : wxFrame(NULL, wxID_ANY, wxT("Rastin")), grid(new wxGrid(this, wxID_ANY)), currentFilePath(_("Untitled")) {
 
-    SetTitle(wxT("Rastin - ") + currentFilePath);
+    SetTitle(wxS("Rastin - ") + currentFilePath);
     InitLimitFactorCurves();
     model = new GridTableModel(limitFactorCurves);
 
     wxMenu* menuFile = new wxMenu;
-    menuFile->Append(ID_Create, wxT("&Создать...\tCtrl-H"),
-        wxT("Создать новый проект"));
-    menuFile->Append(ID_Save, wxT("&Сохранить"), wxT("Сохранение текущего файла"));
-    menuFile->Append(ID_Save_as, wxT("&Сохранить как..."), wxT("Сохранение под другим названием"));
-    menuFile->Append(ID_Open, wxT("&Открыть..."), wxT("Открыть проект"));
+    menuFile->Append(ID_Create, _("&Create...\tCtrl-H"),
+        _("Create new project"));
+    menuFile->Append(ID_Save, _("&Save"), _("Save current file"));
+    menuFile->Append(ID_Save_as, _("&Save as..."), _("Save under a different name"));
+    menuFile->Append(ID_Open, _("&Open..."), _("Open project"));
     menuFile->AppendSeparator();
-    menuFile->Append(wxID_EXIT, wxT("&Выход"), wxT("Выход из программы"));
+    menuFile->Append(wxID_EXIT, _("&Quit"), _("Quit from program"));
 
     wxMenu* menuModule = new wxMenu;
-    menuModule->Append(ID_Window_CT, wxT("&Модуль ТТ..."), wxT("Добавить кривую предельной кратности"));
+    menuModule->Append(ID_Window_CT, _("&Module CT..."), _("Add Accuracy Limit Factor Curve"));
 
     wxMenu* menuTable = new wxMenu;
-    menuTable->Append(ID_Add_row, wxT("&Добавить строку\tCtrl-+"), wxT("Добавить строку в таблице"));
-    menuTable->Append(ID_Delete_row, wxT("&Удалить строку\tCtrl--"), wxT("Удалить строку в таблице"));
+    menuTable->Append(ID_Add_row, _("&Add row\tCtrl-+"), _("Add a row to the table"));
+    menuTable->Append(ID_Delete_row, _("&Delete row\tCtrl--"), _("Delete a row in the table"));
 
     wxMenu* menuHelp = new wxMenu;
-    menuHelp->Append(wxID_ABOUT, wxT("&О программе..."), wxT("О программе"));
+    menuHelp->Append(wxID_ABOUT, _("&About..."), _("About program"));
 
     wxMenuBar* menuBar = new wxMenuBar;
-    menuBar->Append(menuFile, wxT("&Файл"));
-    menuBar->Append(menuModule, wxT("&Модули"));
-    menuBar->Append(menuTable, wxT("&Таблица"));
-    menuBar->Append(menuHelp, wxT("&Помощь"));
+    menuBar->Append(menuFile, _("&File"));
+    menuBar->Append(menuModule, _("&Modules"));
+    menuBar->Append(menuTable, _("&Table"));
+    menuBar->Append(menuHelp, _("&Help"));
 
     SetMenuBar(menuBar);
 
     CreateStatusBar();
-    SetStatusText(wxT("Добро пожаловать!!!"));
+    SetStatusText(_("Welcome!!!"));
 
     Bind(wxEVT_MENU, &MainWindow::OnCreate, this, ID_Create);
     Bind(wxEVT_MENU, &MainWindow::OnSave, this, ID_Save);
@@ -77,7 +77,7 @@ MainWindow::MainWindow()
     
     InitTableValidation();
     
-    calcButton = new wxButton(this, wxID_ANY, wxS("Расчёт"));
+    calcButton = new wxButton(this, wxID_ANY, _("Calculation"));
     Bind(wxEVT_BUTTON, &MainWindow::Calc10Persent, this);
 
     wxBoxSizer* mainSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -95,27 +95,27 @@ void MainWindow::OnExit(wxCommandEvent& event) {
 }
 
 void MainWindow::OnAbout(wxCommandEvent& event) {
-    wxMessageBox(wxT("Это программа по расчету трансформаторов тока и трансформаторов напряжения\nВерсия 0.1.0"),
-        wxT("О программе"), wxOK | wxICON_INFORMATION);
+    wxMessageBox(_("This is a program for calculating current transformers. Version 1.0.0"),
+        _("About program"), wxOK | wxICON_INFORMATION);
 }
 
 
 void MainWindow::saveCurves(const std::string& filename) {
     std::ofstream os(filename, std::ios::binary);
     if (!os.is_open()) {
-        wxLogError(wxT("Не удалось открыть файл для записи: %s"), filename);
+        wxLogError(_("Failed to open file for writing: %s"), filename);
     }
     try {
         cereal::BinaryOutputArchive archive(os);
         archive(limitFactorCurves);
     }
     catch (const std::exception& e) {
-        wxLogError(wxT("Ошибка сериализации: %s"), e.what());
+        wxLogError(_("Serialization error: %s"), e.what());
         os.close();
     }
     os.close();
     if (os.fail()) {
-        wxLogError(wxT("Ошибка при закрытии файла (возможно, не хватило места на диске)"));
+        wxLogError(_("Error closing file (maybe not enough disk space))"));
     }
 }
 
@@ -126,13 +126,13 @@ void MainWindow::loadCurves(const std::string& filename) {
 }
 
 void MainWindow::OnCreate(wxCommandEvent& event) {
-    int result = wxMessageBox(wxT("Сохранить изменения?"),
-        wxT("Подтверждение"), wxYES_NO | wxCANCEL | wxICON_QUESTION);
+    int result = wxMessageBox(_("Save changes?"),
+        _("Confirmation"), wxYES_NO | wxCANCEL | wxICON_QUESTION);
     if (result == wxCANCEL)
         return;
     if (result == wxYES) {
-        if (currentFilePath == wxT("Без названия")) {
-            wxFileDialog saveFileDialog(this, wxT("Сохранить проект"), "", "new.tin",
+        if (currentFilePath == _("Untitled")) {
+            wxFileDialog saveFileDialog(this, _("Save project"), "", "new.tin",
                 "TIN files (*.tin)|*.tin", wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxFD_CHANGE_DIR);
 
             if (saveFileDialog.ShowModal() == wxID_CANCEL)
@@ -142,8 +142,8 @@ void MainWindow::OnCreate(wxCommandEvent& event) {
         model->saveToFile(currentFilePath);
     }
 
-    currentFilePath = wxT("Без названия");
-    SetTitle(wxT("Rastin - ") + currentFilePath);
+    currentFilePath = _("Untitled");
+    SetTitle(_("Rastin - ") + currentFilePath);
     grid->SetTable(nullptr);
     model = new GridTableModel(limitFactorCurves);
 
@@ -154,38 +154,38 @@ void MainWindow::OnCreate(wxCommandEvent& event) {
 }
 
 void MainWindow::OnSave(wxCommandEvent& event) {
-    if (currentFilePath == wxT("Без названия")) {
-        wxFileDialog saveFileDialog(this, wxT("Сохранить проект"), "", "new.tin",
+    if (currentFilePath == _("Untitled")) {
+        wxFileDialog saveFileDialog(this, _("Save project"), "", "new.tin",
             "TIN files (*.tin)|*.tin", wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxFD_CHANGE_DIR);
 
         if (saveFileDialog.ShowModal() == wxID_CANCEL)
             return;     // user cancel dialog
         currentFilePath = saveFileDialog.GetPath();
-        SetTitle(wxT("Rastin - ") + wxFileName(currentFilePath).GetName());
+        SetTitle(_("Rastin - ") + wxFileName(currentFilePath).GetName());
     }
     model->saveToFile(currentFilePath);
 }
 
 void MainWindow::OnSaveAs(wxCommandEvent& event) {
-    wxFileDialog saveFileDialog(this, wxT("Сохранить проект"), "", "new.tin",
+    wxFileDialog saveFileDialog(this, _("Save project"), "", "new.tin",
         "TIN files (*.tin)|*.tin", wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxFD_CHANGE_DIR);
 
     if (saveFileDialog.ShowModal() == wxID_CANCEL)
         return;     // user cancel dialog
     currentFilePath = saveFileDialog.GetPath();
-    SetTitle(wxT("Rastin - ") + wxFileName(currentFilePath).GetName());
+    SetTitle(_("Rastin - ") + wxFileName(currentFilePath).GetName());
     model->saveToFile(currentFilePath);
 
 }
 
 void MainWindow::OnOpen(wxCommandEvent& event) {
-    int result = wxMessageBox(wxT("Сохранить изменения в текущем файле?"),
-        wxT("Подтверждение"), wxYES_NO | wxCANCEL | wxICON_QUESTION);
+    int result = wxMessageBox(_("Save changes to the current file?"),
+        _("Confirmation"), wxYES_NO | wxCANCEL | wxICON_QUESTION);
     if (result == wxCANCEL)
         return;
     if (result == wxYES) {
-        if (currentFilePath == wxT("Без названия")) {
-            wxFileDialog saveFileDialog(this, wxT("Сохранить проект"), "", "new.tin",
+        if (currentFilePath == _("Untitled")) {
+            wxFileDialog saveFileDialog(this, _("Save project"), "", "new.tin",
                 "TIN files (*.tin)|*.tin", wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxFD_CHANGE_DIR);
 
             if (saveFileDialog.ShowModal() == wxID_CANCEL)
@@ -195,13 +195,13 @@ void MainWindow::OnOpen(wxCommandEvent& event) {
         model->saveToFile(currentFilePath);
     }
 
-    wxFileDialog openFileDialog(this, wxT("Открыть файл проекта"), "", "",
+    wxFileDialog openFileDialog(this, _("Open project file"), "", "",
             "TIN files (*.tin)|*.tin", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 
     if (openFileDialog.ShowModal() == wxID_CANCEL)
         return;     // user cancel dialog
     currentFilePath = openFileDialog.GetPath();
-    SetTitle(wxT("Rastin - ") + wxFileName(currentFilePath).GetName());
+    SetTitle(_("Rastin - ") + wxFileName(currentFilePath).GetName());
 
     model->loadFromFile(currentFilePath);
     if (grid->GetNumberRows() < model->size()) {
@@ -227,7 +227,7 @@ void MainWindow::OnOpen(wxCommandEvent& event) {
 
     for (int row = 0; row < grid->GetNumberRows(); ++row) {
         if (!limitFactorCurves.contains(grid->GetCellValue(row, 11))) {
-            grid->SetCellValue(row, 11, _("<Не выбрано>"));
+            grid->SetCellValue(row, 11, _("<Not selected>"));
             grid->SetCellValue(row, 12, _(" "));
             grid->SetCellValue(row, 13, _(" "));
         }
@@ -254,7 +254,7 @@ void MainWindow::Calc10Persent(wxCommandEvent& event) {
     }
     attrGreen->DecRef();
     attrRed->DecRef();
-    wxLogMessage(wxT("Расчет окончен!!!"));
+    wxLogMessage(_("Calculation completed!!!"));
 }
 
 void MainWindow::OnWindowCT(wxCommandEvent& event) {
@@ -262,7 +262,7 @@ void MainWindow::OnWindowCT(wxCommandEvent& event) {
     window->Bind(wxEVT_CLOSE_WINDOW, [window, this](wxCloseEvent& evt) {
         window->Destroy();
         wxArrayString choiceLimitCurves;
-        choiceLimitCurves.Add(_("<Не выбрано>"));
+        choiceLimitCurves.Add(_("<Not selected>"));
         for (auto& curve : limitFactorCurves) {
             choiceLimitCurves.Add(curve.first);
         }
@@ -277,7 +277,7 @@ void MainWindow::OnWindowCT(wxCommandEvent& event) {
         attrLimitCurves->DecRef();
         for (int row = 0; row < grid->GetNumberRows(); ++row) {
             if (!limitFactorCurves.contains(grid->GetCellValue(row, 11))) {
-                grid->SetCellValue(row, 11, _("<Не выбрано>"));
+                grid->SetCellValue(row, 11, _("<Not selected>"));
                 grid->SetCellValue(row, 12, _(" "));
                 grid->SetCellValue(row, 13, _(" "));
             } 
@@ -309,7 +309,7 @@ void MainWindow::OnAddRow(wxCommandEvent& event) {
     wxArrayString choiceSecondaryCT{ _("1"), _("5") };
 
     wxArrayString choiceLimitCurves;
-    choiceLimitCurves.Add(_("<Не выбрано>"));
+    choiceLimitCurves.Add(_("<Not selected>"));
     for (auto& curve : limitFactorCurves) {
         choiceLimitCurves.Add(curve.first);
     }
@@ -337,7 +337,7 @@ void MainWindow::OnDeleteRow(wxCommandEvent& event) {
 
     int rowCount = grid->GetNumberRows();
     if (rowCount == 0) {
-        wxMessageBox(wxT("Нет строк для удаления"), wxT("Информация"));
+        wxMessageBox(_("There are no rows to delete"), _("Information"));
         return;
     }
     int lastRow = rowCount - 1;
@@ -359,15 +359,16 @@ void MainWindow::InitTableValidation() {
         }
     }
     editor->DecRef();
-   // grid->SetColFormatNumber(0);
-   // grid->SetColFormatNumber(2);
-   // grid->SetColFormatNumber(3);
-   // grid->SetColFormatFloat(5, -1, 2);
-   // grid->SetColFormatFloat(6, -1, 2);
-   // grid->SetColFormatFloat(8, -1, 2);
-   // grid->SetColFormatFloat(9, -1, 2);
-   // grid->SetColFormatFloat(10, -1, 2);
-    
+#if 0
+    grid->SetColFormatNumber(0);
+    grid->SetColFormatNumber(2);
+    grid->SetColFormatNumber(3);
+    grid->SetColFormatFloat(5, -1, 2);
+    grid->SetColFormatFloat(6, -1, 2);
+    grid->SetColFormatFloat(8, -1, 2);
+    grid->SetColFormatFloat(9, -1, 2);
+    grid->SetColFormatFloat(10, -1, 2);
+ #endif
 
     for (int row = 0; row < model->GetNumberRows(); ++row) {
         grid->SetReadOnly(row, 12, true);
@@ -377,7 +378,7 @@ void MainWindow::InitTableValidation() {
     wxArrayString choiceSecondaryCT{ _("1"), _("5") };
 
     wxArrayString choiceLimitCurves;
-    choiceLimitCurves.Add(_("<Не выбрано>"));
+    choiceLimitCurves.Add(_("<Not selected>"));
     for (auto& curve : limitFactorCurves) {
         choiceLimitCurves.Add(curve.first);
     }
@@ -408,24 +409,23 @@ void MainWindow::InitTableValidation() {
 }
 
 void MainWindow::InitLimitFactorCurves() {
-   // Spline temp;
-   // std::vector<double> x1 = { 5, 7.4, 9, 15, 20, 25, 30 };
-   // std::vector<double> y1 = { 33, 25, 20, 11.4, 8.7, 7.5, 6.7 };
-   // std::vector<double> x2 = { 5, 7.8, 10, 15, 20, 25, 30 };
-   // std::vector<double> y2 = { 35, 24, 19, 10, 7.3, 5.5, 3.3 };
-  //  std::vector<double> x3 = { 6, 10 };
-  //  std::vector<double> y3 = { 30, 20 };
+#if 0
+    Spline temp;
+    std::vector<double> x1 = { 5, 7.4, 9, 15, 20, 25, 30 };
+    std::vector<double> y1 = { 33, 25, 20, 11.4, 8.7, 7.5, 6.7 };
+    std::vector<double> x2 = { 5, 7.8, 10, 15, 20, 25, 30 };
+    std::vector<double> y2 = { 35, 24, 19, 10, 7.3, 5.5, 3.3 };
+    std::vector<double> x3 = { 6, 10 };
+    std::vector<double> y3 = { 30, 20 };
 
-  //  temp.init(x1, y1);
-  // limitFactorCurves.emplace("Не выбрано", temp);
-  //  temp.init(x2, y2);
-  //  limitFactorCurves.emplace("My_spline2", temp);
-  //  temp.init(x3, y3);
-  //  limitFactorCurves.emplace("My_spline3", temp);
-  //  
+    temp.init(x1, y1);
+    limitFactorCurves.emplace("�� �������", temp);
+    temp.init(x2, y2);
+    limitFactorCurves.emplace("My_spline2", temp);
+    temp.init(x3, y3);
+    limitFactorCurves.emplace("My_spline3", temp);
+#endif
     loadCurves("curves.bin");
-    
-  
 }
 
 MainWindow::~MainWindow() {

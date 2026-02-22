@@ -15,48 +15,44 @@ enum {
 };
 
 CTWindow::CTWindow(wxWindow* parent, std::map<wxString, Spline>& limitFactorCurves) : 
-	wxDialog(parent, wxID_ANY, wxT("Кривые предельной кратности")),
+    wxDialog(parent, wxID_ANY, _("Accuracy Limit Factor Curves")),
 	m_curves(limitFactorCurves) {
 
 	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
 
-	//создаем панель для рисования графика
 	m_paintPanel = new GraphPanel(this);
-	//Выбор верхней кривой для отображения
+
 	if (!m_curves.empty())
 	    m_paintPanel->SetCurrentCurve((*m_curves.begin()).second);
 	mainSizer->Add(m_paintPanel, 1, wxEXPAND | wxALL, 10);
 
-	//создаем список кривых
+
 	m_listCurves = new wxListBox(
 		this, wxID_ANY, wxDefaultPosition, wxDefaultSize,
-		0, nullptr,               // данные добавим позже
-		wxLB_SINGLE | wxLB_NEEDED_SB  // одиночное выделение + прокрутка 
+        0, nullptr,
+        wxLB_SINGLE | wxLB_NEEDED_SB
 	);
-	// Установим минимальную высоту ≈ 5 строк
+
 	int lineHeight = m_listCurves->GetCharHeight();
-	m_listCurves->SetMinSize(wxSize(-1, lineHeight * 5 + 10)); // + небольшой отступ
+    m_listCurves->SetMinSize(wxSize(-1, lineHeight * 5 + 10));
 	mainSizer->Add(m_listCurves, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 5);
-	// Заполнение названиями кривых
+
 	wxArrayString sampleItems;
 	for (const auto& item : m_curves) sampleItems.Add(item.first);
 	m_listCurves->Set(sampleItems);
 
-	// Текстовое поле (однострочное вводимое)
+
 	m_nameCurve = new wxTextCtrl(this, wxID_ANY);
 	mainSizer->Add(m_nameCurve, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 5);
-	
 
-	// Две кнопки в горизонтальном боксе
 	wxBoxSizer* btnSizer = new wxBoxSizer(wxHORIZONTAL);
-	m_addCurve = new wxButton(this, ID_BUTTON_ADD, wxT("Добавить кривую"));
-	m_delCurve = new wxButton(this, ID_BUTTON_DELETE, wxT("Удалить кривую"));
+    m_addCurve = new wxButton(this, ID_BUTTON_ADD, _("Add curve"));
+    m_delCurve = new wxButton(this, ID_BUTTON_DELETE, _("Delete curve"));
 
 	btnSizer->Add(m_addCurve, 0, wxRIGHT, 5);
 	btnSizer->Add(m_delCurve, 0);
 	mainSizer->Add(btnSizer, 0, wxALIGN_RIGHT | wxLEFT | wxRIGHT | wxBOTTOM, 5);
 
-	// Создаем таблицу и устанавливаем кастомный редактор
 	m_gridOfValue = new wxGrid(this, wxID_ANY);
 	m_gridOfValue->CreateGrid(2, 7);
 	MyGridCellFloatEditor* editor = new MyGridCellFloatEditor;
@@ -67,14 +63,13 @@ CTWindow::CTWindow(wxWindow* parent, std::map<wxString, Spline>& limitFactorCurv
 		}
 	}
 	editor->DecRef();
-	
-	//Добавляем заголовки столбцов и строк в таблице
+
 	const std::array<wxString, 7> colLabelValues{ "1", "2", "3", "4", "5", "6", "7" };
 	for (int i = 0; i < colLabelValues.size(); ++i) {
 		m_gridOfValue->SetColLabelValue(i, colLabelValues[i]);
 	}
-	m_gridOfValue->SetRowLabelValue(0, "S");
-	m_gridOfValue->SetRowLabelValue(1, "K");
+    m_gridOfValue->SetRowLabelValue(0, _("S"));
+    m_gridOfValue->SetRowLabelValue(1, _("K"));
 
 	m_gridOfValue->SetGridLineColour(*wxBLACK);
 	mainSizer->Add(m_gridOfValue, 0, wxALIGN_CENTER | wxALL, 10);
@@ -109,13 +104,13 @@ void CTWindow::OnButtonAdd(wxCommandEvent& event) {
 	wxString newCurveName = m_nameCurve->GetValue();
 	wxRegEx regex("^\\s+");
 	if (regex.Matches(newCurveName)) {
-		wxMessageBox(wxT("Название кривой предельной кратности не должно начинаться с пробелов!"),
-			wxT("Внимание"), wxOK | wxICON_WARNING);
+        wxMessageBox(_("The name of the Accuracy Limit Factor Curve must not begin with spaces!"),
+            _("Attention"), wxOK | wxICON_WARNING);
 		return;
 	}
 	if (newCurveName.empty()) {
-		wxMessageBox(wxT("Название кривой предельной кратности не должно быть пустым!"),
-			wxT("Внимание"), wxOK | wxICON_WARNING);
+        wxMessageBox(_("The name of the Accuracy Limit Factor Curve must not be empty!"),
+            _("Attention"), wxOK | wxICON_WARNING);
 		return;
 	}
 	std::map<double, double> valuesFromGrid;
@@ -132,13 +127,13 @@ void CTWindow::OnButtonAdd(wxCommandEvent& event) {
 		}
 	}
 	if (valuesFromGrid.size() < 3) {
-		wxMessageBox(wxT("Число точек должно быть не меньше 3!"),
-			wxT("Внимание"), wxOK | wxICON_WARNING);
+        wxMessageBox(_("The number of points must be at least 3!"),
+            _("Attention"), wxOK | wxICON_WARNING);
 		return;
 	}
 	if (m_curves.contains(newCurveName)) {
-		int result = wxMessageBox(wxT("Такое название кривой предельной кратности уже существует! Заменить существующую кривую на новую?"),
-			wxT("Подтверждение"), wxYES_NO | wxICON_QUESTION);
+        int result = wxMessageBox(_("This Accuracy Limit Factor Curve name already exists! Replace the existing curve with the new one?"),
+            _("Confirmation"), wxYES_NO | wxICON_QUESTION);
 		if (result == wxNO)
 			return;
 	}
@@ -160,8 +155,8 @@ void CTWindow::OnButtonAdd(wxCommandEvent& event) {
 
 void CTWindow::OnButtonDelete(wxCommandEvent& event) {
 	if (m_listCurves->GetCount() > 0) {
-		int result = wxMessageBox(wxT("Удалить данную кривую предельной кратности?"),
-			wxT("Подтверждение"), wxYES_NO | wxICON_QUESTION);
+        int result = wxMessageBox(_("Delete Accuracy Limit Factor Curve?"),
+            _("Confirmation"), wxYES_NO | wxICON_QUESTION);
 		if (result == wxNO)
 			return;
 
@@ -204,7 +199,7 @@ void CTWindow::UpdateAllInWindow(const wxString& str) {
 	m_nameCurve->SetValue(str);
 	m_paintPanel->SetCurrentCurve(m_curves[str]);
 	m_paintPanel->Refresh();
-	//Заполнение таблицы
+
 	for (size_t i = 0; i < m_gridOfValue->GetNumberCols(); ++i) {
 		if (i < m_curves[str].GetSizeArray()) {
 			m_gridOfValue->SetCellValue(0, i, wxString::Format("%.3f", m_curves[str].GetXArray(i)));

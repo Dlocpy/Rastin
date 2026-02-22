@@ -1,5 +1,4 @@
 #pragma once
-#pragma execution_character_set("utf-8")
 #include <wx/panel.h>
 #include <optional>
 #include "Spline.h"

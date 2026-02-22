@@ -6,20 +6,20 @@ GridTableModel::GridTableModel(std::map<wxString, Spline>& limitFactorCurves) :
 	m_curves(limitFactorCurves) {
 	initData();
 }
-//Создание таблицы с данными
+
 void GridTableModel::initData() {
 	
 
 
-	m_colLabels = { _("Iперв"), _("Iвтор"), _("Kном"), _("Sном"),
-				    _("Защита"), _("Sнагр"), _("Lкаб"), _("Сечение"),
-					_("Rконт"), _("I(3)кз"), _("I(1)кз"), _("Kпр"),
-		            _("S(3)доп"), _("S(1)доп") };
+    m_colLabels = { _("Iprim"), _("Isec"), _("Knom"), _("Snom"),
+                    _("Protection"), _("Sload"), _("Lcable"), _("Section"),
+                    _("Rcont"), _("I(3)sc"), _("I(1)sc"), _("K"),
+                    _("S(3)perm"), _("S(1)perm") };
 #if 1	
 	m_dataTable = {
 		CTWinding{ _(" "), _(" "), _(" "), _(" "),
 				   _(" "), _(" "), _(" "), _(" "),
-				   _(" "), _(" "), _(" "), _("<Не выбрано>"),
+                   _(" "), _(" "), _(" "), _("<Not selected>"),
 				   _(" "), _(" ") }
 	};
 	for (int row = 0; row < GetNumberRows(); ++row)
@@ -52,7 +52,7 @@ void GridTableModel::SetValue(int row, int col, const wxString& value) {
 	if (row < 0 || row >= static_cast<int>(m_dataTable.size()) || col < 0 || col >= static_cast<int>(m_colLabels.size()))
 		return;
 	m_dataTable[row].memberValue(col) = value;
-	if (col == 0 || col == 9 || col == 10 || col == 11) //меняются первичный ток, трехфазный ток КЗ, однофазный ток КЗ, кривая предельной кратности
+    if (col == 0 || col == 9 || col == 10 || col == 11)
 		CalcLimitFactorCurvesRow(row);
 		
 }
@@ -69,7 +69,7 @@ bool GridTableModel::AppendRows(size_t numRows) {
 	
 	m_dataTable.emplace_back(CTWinding{ _(" "), _(" "), _(" "), _(" "),
 				   _(" "), _(" "), _(" "), _(" "),
-				   _(" "), _(" "), _(" "), _("<Не выбрано>"),
+                   _(" "), _(" "), _(" "), _("<Not selected>"),
 				   _(" "), _(" ") });
 	return true;
 }
@@ -153,7 +153,7 @@ void GridTableModel::CalcLimitFactorCurvesRow(int row) {
 	GetValue(row, 9).ToDouble(&threePhaseCurrent);
 	GetValue(row, 10).ToDouble(&onePhaseCurrent);
 	wxString currentCurve = m_dataTable[row].limitFactorCurve;
-	if (currentCurve == _("<Не выбрано>")) {
+    if (currentCurve == _("<Not selected>")) {
 			SetValue(row, 12, " ");
 			SetValue(row, 13, " ");
 	}

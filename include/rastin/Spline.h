@@ -23,7 +23,6 @@ public:
         segment.resize(n - 1);
 
         if (n == 2) {
-            // Линейный случай — сплайн вырождается в прямую
             double h = x[1] - x[0];
             segment[0].abscis = x[0];
             segment[0].a = y[0];
@@ -38,7 +37,7 @@ public:
             h[i] = x[i + 1] - x[i];
         }
 
-        std::vector<double> alpha(n, 0.0); // инициализируем нулями
+        std::vector<double> alpha(n, 0.0);
         for (size_t i = 1; i < n - 1; ++i) {
             alpha[i] = 3.0 * ((y[i + 1] - y[i]) / h[i] - (y[i] - y[i - 1]) / h[i - 1]);
         }
@@ -47,7 +46,6 @@ public:
         std::vector<double> mu(n);
         std::vector<double> z(n);
 
-        // Прямой ход (метод прогонки)
         l[0] = 1.0;
         mu[0] = 0.0;
         z[0] = 0.0;
@@ -61,7 +59,6 @@ public:
         l[n - 1] = 1.0;
         z[n - 1] = 0.0;
 
-        // Обратный ход
         std::vector<double> c(n);
         c[n - 1] = 0.0;
         for (size_t i = n - 2; i >= 1; --i) {
@@ -69,7 +66,6 @@ public:
         }
         c[0] = 0.0; //
 
-        // Вычисление коэффициентов сплайна
         
         for (size_t i = 0; i < n - 1; ++i) {
             segment[i].abscis = x[i];
@@ -79,8 +75,6 @@ public:
             segment[i].d = (c[i + 1] - c[i]) / (3.0 * h[i]);
         }
 
-        //=========================================================================//
-        //Интерполяция y от x 
         auto yReverse = y;
         auto xReverse = x;
         std::reverse(yReverse.begin(), yReverse.end());
@@ -89,7 +83,6 @@ public:
         segmentReverse.resize(n - 1);
 
         if (n == 2) {
-            // Линейный случай — сплайн вырождается в прямую (x <--> y)
             double hReverse = yReverse[1] - yReverse[0];
             segmentReverse[0].abscis = yReverse[0];
             segmentReverse[0].a = xReverse[0];
@@ -104,7 +97,7 @@ public:
             hReverse[i] = yReverse[i + 1] - yReverse[i];
         }
 
-        std::vector<double> alphaReverse(n, 0.0); // инициализируем нулями
+        std::vector<double> alphaReverse(n, 0.0);
         for (size_t i = 1; i < n - 1; ++i) {
             alphaReverse[i] = 3.0 * ((xReverse[i + 1] - xReverse[i]) / hReverse[i] - (xReverse[i] - xReverse[i - 1]) / hReverse[i - 1]);
         }
@@ -113,7 +106,6 @@ public:
         std::vector<double> muReverse(n);
         std::vector<double> zReverse(n);
 
-        // Прямой ход (метод прогонки)
         lReverse[0] = 1.0;
         muReverse[0] = 0.0;
         zReverse[0] = 0.0;
@@ -127,7 +119,6 @@ public:
         lReverse[n - 1] = 1.0;
         zReverse[n - 1] = 0.0;
 
-        // Обратный ход
         std::vector<double> cReverse(n);
         cReverse[n - 1] = 0.0;
         for (size_t i = n - 2; i >= 1; --i) {
@@ -135,7 +126,6 @@ public:
         }
         cReverse[0] = 0.0; // 
 
-        // Вычисление коэффициентов сплайна
         for (size_t i = 0; i < n - 1; ++i) {
             segmentReverse[i].abscis = yReverse[i];
             segmentReverse[i].a = xReverse[i];

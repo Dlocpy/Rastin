@@ -10,11 +10,9 @@ void GraphPanel::OnPaint(wxPaintEvent& event) {
     
     wxPaintDC dc(this);
 
-    //очистка фона
     dc.SetBackground(*wxWHITE_BRUSH);
     dc.Clear();
 
-    //получение размеров панели пользователя
     int width, height;
     GetClientSize(&width, &height);
 
@@ -22,15 +20,14 @@ void GraphPanel::OnPaint(wxPaintEvent& event) {
     const double reserve = 15.0 / 100 + 1.0;
     // Оси
     dc.SetPen(wxPen(*wxBLACK, 2));
-    dc.DrawLine(margin, height - margin, width - margin, height - margin); // S
-    dc.DrawLine(margin, margin, margin, height - margin);                 // Kпр
+    dc.DrawLine(margin, height - margin, width - margin, height - margin);
+    dc.DrawLine(margin, margin, margin, height - margin);
 
-    // Подписи
-    dc.DrawText("S", width - margin + 10, height - margin + 10);
-    dc.DrawText("Kпр", margin - 20, margin - 20);
+    dc.DrawText(_("S"), width - margin + 10, height - margin + 10);
+    dc.DrawText(_("K"), margin - 20, margin - 20);
 
     if (m_currentCurve.has_value()) {
-        //кривая предельной кратности
+
         dc.SetPen(wxPen(*wxBLUE, 5));
 
         double xMin = m_currentCurve.value().GetXMin();
